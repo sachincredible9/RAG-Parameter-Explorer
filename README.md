@@ -230,3 +230,72 @@ docker build -t $REPO_NAME ./backend
 docker tag $REPO_NAME:latest $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO_NAME:latest
 docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO_NAME:latest
 ```
+
+---
+
+## 📸 Application Gallery & Screenshots
+
+Explore the clean, responsive layouts of the DocMind Studio application.
+
+### Dark Mode View (Default Workspace)
+
+<details>
+<summary><b>1. Dashboard Interface (Click to expand)</b></summary>
+<br>
+
+![Dashboard Dark](screenshots/dashboard_dark.png)
+</details>
+
+<details>
+<summary><b>2. Visual Chunking Simulator & Document Library (Click to expand)</b></summary>
+<br>
+
+![Document Library Dark](screenshots/document_library_dark.png)
+</details>
+
+<details>
+<summary><b>3. Persona Builder & System Instructions (Click to expand)</b></summary>
+<br>
+
+![Persona Builder Dark](screenshots/persona_builder_dark.png)
+</details>
+
+<details>
+<summary><b>4. Side-by-Side Simulation Playground (Click to expand)</b></summary>
+<br>
+
+![Simulator Playground Dark](screenshots/simulator_playground_dark.png)
+</details>
+
+<details>
+<summary><b>5. Tenant Configurations & Settings (Click to expand)</b></summary>
+<br>
+
+![Settings Dark](screenshots/settings_dark.png)
+</details>
+
+---
+
+### Light Mode View (Premium Theme Option)
+
+<details>
+<summary><b>1. Light Mode Dashboard (Click to expand)</b></summary>
+<br>
+
+![Dashboard Light](screenshots/dashboard_light.png)
+</details>
+
+<details>
+<summary><b>2. Light Mode Simulator Playground (Click to expand)</b></summary>
+<br>
+
+![Simulator Playground Light](screenshots/simulator_playground_light.png)
+</details>
+
+<details>
+<summary><b>3. Light Mode Settings (Click to expand)</b></summary>
+<br>
+
+![Settings Light](screenshots/settings_light.png)
+</details>
+

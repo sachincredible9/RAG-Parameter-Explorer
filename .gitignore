@@ -32,3 +32,6 @@ Thumbs.db
 # LLM Local Weights / Models
 **/models/
 **/*.gguf
+
+# Local utilities
+screenshot_tool/

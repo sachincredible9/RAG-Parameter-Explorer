@@ -68,6 +68,119 @@ export default function SimulatorPlayground() {
     }
   };
 
+  const handleUseCaseChange = (e) => {
+    const val = e.target.value;
+    if (val === 'support') {
+      const terminix = documents.find(d => d.filename.toLowerCase().includes('terminix') || d.filename.toLowerCase().includes('contract'));
+      if (terminix) {
+        setSelectedDocId(terminix.id);
+      } else if (documents.length > 0) {
+        setSelectedDocId(documents[0].id);
+      }
+      
+      const supportPersona = personas.find(p => p.name.toLowerCase().includes('support') || p.name.toLowerCase().includes('customer'));
+      if (supportPersona) {
+        setSelectedPersonaId(supportPersona.id);
+        setSystemInstruction(supportPersona.system_instruction);
+      } else {
+        setSelectedPersonaId('custom');
+        setSystemInstruction('You are a helpful customer support agent. Answer questions concisely based only on the provided context.');
+      }
+      
+      setQuery('What is covered under the Terminix service guarantee? Are structural pest damages excluded?');
+      
+      setConfigA({
+        model: 'mistral-7b-instruct-gguf',
+        chunk_size: 400,
+        chunk_overlap: 80,
+        temperature: 0.2,
+        top_p: 0.95,
+        top_k: 40
+      });
+      
+      setConfigB({
+        model: 'mistral-7b-instruct-gguf',
+        chunk_size: 1500,
+        chunk_overlap: 0,
+        temperature: 0.8,
+        top_p: 0.95,
+        top_k: 40
+      });
+    } else if (val === 'legal') {
+      const contract = documents.find(d => d.filename.toLowerCase().includes('contract') || d.filename.toLowerCase().includes('legal'));
+      if (contract) {
+        setSelectedDocId(contract.id);
+      } else if (documents.length > 0) {
+        setSelectedDocId(documents[0].id);
+      }
+      
+      const legalPersona = personas.find(p => p.name.toLowerCase().includes('legal') || p.name.toLowerCase().includes('research'));
+      if (legalPersona) {
+        setSelectedPersonaId(legalPersona.id);
+        setSystemInstruction(legalPersona.system_instruction);
+      } else {
+        setSelectedPersonaId('custom');
+        setSystemInstruction('You are a senior legal auditor. Analyze clauses carefully, identify liability limits, and cite section numbers.');
+      }
+      
+      setQuery('Identify any limitations of liability, arbitration terms, or exclusions of structural damage.');
+      
+      setConfigA({
+        model: 'mistral-7b-instruct-gguf',
+        chunk_size: 1000,
+        chunk_overlap: 200,
+        temperature: 0.1,
+        top_p: 0.9,
+        top_k: 30
+      });
+      
+      setConfigB({
+        model: 'mistral-7b-instruct-gguf',
+        chunk_size: 300,
+        chunk_overlap: 20,
+        temperature: 0.7,
+        top_p: 0.95,
+        top_k: 50
+      });
+    } else if (val === 'medical') {
+      const med = documents.find(d => d.filename.toLowerCase().includes('medical') || d.filename.toLowerCase().includes('audit') || d.filename.toLowerCase().includes('terminix'));
+      if (med) {
+        setSelectedDocId(med.id);
+      } else if (documents.length > 0) {
+        setSelectedDocId(documents[0].id);
+      }
+      
+      const medPersona = personas.find(p => p.name.toLowerCase().includes('medical') || p.name.toLowerCase().includes('auditor') || p.name.toLowerCase().includes('compliance'));
+      if (medPersona) {
+        setSelectedPersonaId(medPersona.id);
+        setSystemInstruction(medPersona.system_instruction);
+      } else {
+        setSelectedPersonaId('custom');
+        setSystemInstruction('You are a senior medical compliance auditor. Review patient records or guidelines for audit compliance.');
+      }
+      
+      setQuery('Summarize the primary guidelines, billing regulations, and audit requirements.');
+      
+      setConfigA({
+        model: 'mistral-7b-instruct-gguf',
+        chunk_size: 800,
+        chunk_overlap: 150,
+        temperature: 0.15,
+        top_p: 0.9,
+        top_k: 40
+      });
+      
+      setConfigB({
+        model: 'mistral-7b-instruct-gguf',
+        chunk_size: 2000,
+        chunk_overlap: 500,
+        temperature: 0.5,
+        top_p: 0.95,
+        top_k: 40
+      });
+    }
+  };
+
   // Run Preset Queries helper
   const handlePresetQuery = (type) => {
     if (type === 'summarize') {
@@ -119,6 +232,31 @@ export default function SimulatorPlayground() {
 
   return (
     <div className="space-y-6">
+      {/* Start Here: Use Case Presets */}
+      <div className="glass-panel rounded-xl p-5 border-l-4 border-l-indigo-500 bg-gradient-to-r from-indigo-500/5 to-transparent flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="space-y-1">
+          <h3 className="text-sm font-bold text-text-app flex items-center">
+            <Sparkles className="h-4 w-4 mr-1.5 text-indigo-400 animate-pulse" /> Start Here: Use Case Presets
+          </h3>
+          <p className="text-xs text-text-muted">
+            Select a common workload to automatically pre-configure optimized chunk sizes, overlap ranges, system personas, and comparative settings.
+          </p>
+        </div>
+        <div className="w-full md:w-72 space-y-1.5">
+          <label className="text-[10px] font-bold text-text-muted uppercase tracking-wider block">Use Case</label>
+          <select
+            onChange={handleUseCaseChange}
+            defaultValue=""
+            className="w-full rounded bg-[var(--bg-input)] border border-border-panel p-2.5 text-sm text-text-app font-semibold focus:border-indigo-500 focus:outline-none cursor-pointer"
+          >
+            <option value="" disabled>-- Select a Use Case --</option>
+            <option value="support">Customer Support Chatbot</option>
+            <option value="legal">Legal Contract Researcher</option>
+            <option value="medical">Medical Auditor</option>
+          </select>
+        </div>
+      </div>
+
       {/* 1. Global Setup Context */}
       <div className="glass-panel rounded-xl p-5 grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-1 flex flex-col gap-4">

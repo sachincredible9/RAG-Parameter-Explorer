@@ -35,7 +35,7 @@ class LocalGGUFModel:
             filename = settings.MODEL_BASENAME
             model_dir = settings.MODEL_DIR
 
-            print(f"🤖 [GGUF] Initializing local model download: {filename} from {repo_id}...")
+            print(f"[GGUF] Initializing local model download: {filename} from {repo_id}...")
             
             try:
                 # Ensure directory exists
@@ -47,20 +47,20 @@ class LocalGGUFModel:
                     filename=filename,
                     local_dir=model_dir
                 )
-                print(f"✅ [GGUF] Model downloaded/cached at: {model_path}")
+                print(f"[GGUF] Model downloaded/cached at: {model_path}")
                 
                 # Load GGUF model in memory
                 # On macOS, n_gpu_layers=-1 uses Metal framework for fast Apple Silicon GPU acceleration
-                print("⚡ [GGUF] Loading Mistral-7B model into memory (GPU layers offloaded)...")
+                print("[GGUF] Loading Mistral-7B model into memory (GPU layers offloaded)...")
                 cls._instance = Llama(
                     model_path=model_path,
                     n_ctx=2048,
                     n_gpu_layers=-1, # GPU acceleration enabled
                     verbose=False
                 )
-                print("🎉 [GGUF] Local model successfully initialized!")
+                print("[GGUF] Local model successfully initialized!")
             except Exception as e:
-                print(f"❌ [GGUF] Failed to download or load local model: {str(e)}")
+                print(f"[GGUF] Failed to download or load local model: {str(e)}")
                 cls._instance = None
                 raise e
                 

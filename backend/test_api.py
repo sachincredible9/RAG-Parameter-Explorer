@@ -4,7 +4,7 @@ from app.services.chunking_service import ChunkingService
 from app.services.llm_service import LLMService
 
 def run_tests():
-    print("🧪 Running DocMind Studio Automated Verification Tests...")
+    print("Running DocMind Studio Automated Verification Tests...")
     
     # Test 1: Chunking Service splits text correctly
     text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
@@ -19,7 +19,7 @@ def run_tests():
         print(f"    Content: '{c['content']}'")
         
     assert len(chunks) > 0, "Chunk list should not be empty"
-    print("✅ Chunking Service: PASSED")
+    print("Chunking Service: PASSED")
 
     # Test 2: Search Retrieval / Matching
     print("\n[Test 2] RAG Search Relevance Validation:")
@@ -31,7 +31,7 @@ def run_tests():
         
     assert len(relevant) > 0, "Relevant chunks should be returned"
     assert relevant[0]['score'] > 0.0, "Matching chunk score should be non-zero"
-    print("✅ RAG Search Validation: PASSED")
+    print("RAG Search Validation: PASSED")
 
     # Test 3: LLM Service Mock Output
     print("\n[Test 3] LLM Service Param Forwarding & Mock Fallback:")
@@ -55,13 +55,13 @@ def run_tests():
     assert "Simulated Summary" in res['response'], "Response should match mock summarization rule"
     assert res['generation_time_ms'] > 0, "Latency should be non-zero"
     assert res['token_count'] > 0, "Token count should be logged"
-    print("✅ LLM Mock Service Validation: PASSED")
+    print("LLM Mock Service Validation: PASSED")
 
-    print("\n🎉 All Verification Tests Completed Successfully!")
+    print("\nAll Verification Tests Completed Successfully!")
 
 if __name__ == "__main__":
     try:
         run_tests()
     except Exception as e:
-        print(f"❌ Test verification failed: {str(e)}")
+        print(f"Test verification failed: {str(e)}")
         sys.exit(1)

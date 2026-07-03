@@ -1,0 +1,103 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg-app: var(--bg-app);
+  --color-text-app: var(--text-app);
+  --color-text-muted: var(--text-muted);
+  --color-border-panel: var(--border-panel);
+}
+
+:root {
+  --bg-app: #f8fafc; /* light: slate-50 */
+  --text-app: #0f172a; /* light: slate-900 */
+  --text-muted: #475569; /* light: slate-600 */
+  --bg-panel: rgba(255, 255, 255, 0.75);
+  --border-panel: rgba(15, 23, 42, 0.08);
+  --bg-input: #ffffff;
+  --border-input: #cbd5e1;
+  --bg-card-a: rgba(99, 102, 241, 0.04);
+  --bg-card-b: rgba(16, 185, 129, 0.04);
+  --bg-sidebar: #f1f5f9;
+  --border-sidebar: #e2e8f0;
+}
+
+:root.dark {
+  --bg-app: #0B0F19; /* dark: deep slate blue */
+  --text-app: #f1f5f9; /* dark: slate-100 */
+  --text-muted: #94a3b8; /* dark: slate-400 */
+  --bg-panel: rgba(15, 23, 42, 0.45);
+  --border-panel: rgba(255, 255, 255, 0.05);
+  --bg-input: #020617;
+  --border-input: #1e293b;
+  --bg-card-a: rgba(99, 102, 241, 0.1);
+  --bg-card-b: rgba(16, 185, 129, 0.1);
+  --bg-sidebar: #0B0F19;
+  --border-sidebar: #1e293b;
+}
+
+@layer base {
+  body {
+    background-color: var(--bg-app);
+    color: var(--text-app);
+    @apply antialiased font-sans transition-colors duration-200 selection:bg-indigo-500/30 selection:text-indigo-200;
+  }
+}
+
+/* Custom Scrollbar for a premium look */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-app);
+  transition: background-color 0.2s;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-input);
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Subtle pulse border animation for active states */
+@keyframes border-glow {
+  0%, 100% {
+    border-color: rgba(99, 102, 241, 0.4);
+  }
+  50% {
+    border-color: rgba(99, 102, 241, 0.8);
+  }
+}
+
+.active-border-glow {
+  animation: border-glow 3s infinite;
+}
+
+/* Custom Glassmorphism styles */
+.glass-panel {
+  background: var(--bg-panel);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-panel);
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.glass-card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card-hover:hover {
+  transform: translateY(-2px);
+  background: var(--bg-panel);
+  border-color: rgba(99, 102, 241, 0.3);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.15), 0 0 20px 0 rgba(99, 102, 241, 0.05);
+}
+
+.dark .glass-card-hover:hover {
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), 0 0 20px 0 rgba(99, 102, 241, 0.05);
+}

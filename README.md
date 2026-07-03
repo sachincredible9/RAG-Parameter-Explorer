@@ -8,6 +8,75 @@ Prompt engineers and developers can upload text or PDF documents, configure syst
 
 ## 🏗️ Technical Architecture & Key Highlights
 
+### Technical Architecture Diagram
+
+```mermaid
+graph TD
+    %% Tiers & Nodes
+    subgraph Client ["Frontend Tier (SPA Client)"]
+        ReactApp["React App (Vite)"]
+        Theme["Theme Switcher (Light / Dark)"]
+        TenantSel["Tenant Switcher (Header Context)"]
+        Simulator["Simulator Interface (A/B Panels)"]
+    end
+
+    subgraph API ["Backend Tier (API Gateway)"]
+        FastAPI["FastAPI API Gateway"]
+        AuthRouter["Auth Router (Tenant Settings)"]
+        DocRouter["Documents Router (Upload / Ingestion)"]
+        SimRouter["Simulation Router (Side-by-Side Evaluation)"]
+        
+        DocService["Document Ingestion Service"]
+        ChunkService["Chunking & Visualizer Service"]
+        LLMService["LLM Inference Router"]
+    end
+
+    subgraph Data ["Data & Inference Tier"]
+        subgraph DB ["Database Isolation (RLS / Tenant Headers)"]
+            SQLite["SQLite (Local Mode: docmind.db)"]
+            Postgres["PostgreSQL / Supabase (Cloud Mode)"]
+        end
+        
+        subgraph LLM ["LLM Inference Engines"]
+            LocalGGUF["Local GGUF Engine (llama-cpp-python)"]
+            MistralWeights["Mistral 7B Weights (huggingface_hub cached)"]
+            CustomLLM["Custom Private LLM (API Gateway / Ollama)"]
+            PublicLLM["Public APIs (Gemini / OpenAI / Anthropic)"]
+        end
+    end
+
+    %% Flow Connections
+    ReactApp -->|HTTP requests with X-Tenant-Id| FastAPI
+    Theme -->|Sync to DOM & LocalStorage| ReactApp
+    TenantSel -->|Set header context| ReactApp
+    Simulator -->|Simulate Configs A/B| ReactApp
+
+    FastAPI --> AuthRouter
+    FastAPI --> DocRouter
+    FastAPI --> SimRouter
+
+    DocRouter --> DocService
+    DocRouter --> ChunkService
+    SimRouter --> ChunkService
+    SimRouter --> LLMService
+
+    DocService --> DB
+    ChunkService --> DB
+    
+    LLMService -->|Routes query & config| LLM
+    LocalGGUF -->|Load weights| MistralWeights
+    
+    classDef client fill:#f9f0ff,stroke:#d3adf7,stroke-width:2px;
+    classDef api fill:#e6f7ff,stroke:#91d5ff,stroke-width:2px;
+    classDef db fill:#f6ffed,stroke:#b7eb8f,stroke-width:2px;
+    classDef llm fill:#fff7e6,stroke:#ffd591,stroke-width:2px;
+    
+    class ReactApp,Theme,TenantSel,Simulator client;
+    class FastAPI,AuthRouter,DocRouter,SimRouter,DocService,ChunkService,LLMService api;
+    class SQLite,Postgres db;
+    class LocalGGUF,MistralWeights,CustomLLM,PublicLLM llm;
+```
+
 ### 1. Unified Monorepo Structure
 - **Frontend (UI Tier):** React.js (Vite) + Tailwind CSS (v4) + Lucide React + Axios. Built as a responsive, modern Glassmorphic dashboard.
 - **Backend (API Tier):** FastAPI (Python 3.10+) + SQLAlchemy + Uvicorn. Clean RESTful API architecture with dependency injection and robust CORS setup.
